@@ -198,7 +198,7 @@ instance (Reflects q z, IntegralDomain z) => Additive.C (ZqBasic q z) where
 
 -- instance of Ring
 instance (Reflects q z, ToInteger z) => Ring.C (ZqBasic q z) where
-  {-# SPECIALIZE instance (Reflects q Int64) => Ring.C (ZqBasic q Int64) #-}
+  -- {-# SPECIALIZE instance (Reflects q Int64) => Ring.C (ZqBasic q Int64) #-}
 
   {-# INLINABLE (*) #-}
   (ZqB x) * (ZqB y) = reduce' $ x * y
@@ -223,12 +223,12 @@ instance (Reflects q z, ToInteger z, PID z, Show z) => Field.C (ZqBasic q z) whe
 -- (canonical) instance of IntegralDomain, needed for Cyclotomics
 instance (Reflects q z, ToInteger z, PID z, Show z)
   => IntegralDomain.C (ZqBasic q z) where
-  {-# SPECIALIZE instance (Reflects q Int64) => IntegralDomain.C (ZqBasic q Int64) #-}
+  -- {-# SPECIALIZE instance (Reflects q Int64) => IntegralDomain.C (ZqBasic q Int64) #-}
   divMod a b = (a/b, zero)
 
 -- Gadget-related instances
 instance (Reflects q z, ToInteger z) => Gadget TrivGad (ZqBasic q z) where
-  {-# SPECIALIZE instance (Reflects q Int64) => Gadget TrivGad (ZqBasic q Int64) #-}
+  -- {-# SPECIALIZE instance (Reflects q Int64) => Gadget TrivGad (ZqBasic q Int64) #-}
   gadget = [one]
 
 instance (Reflects q z, ToInteger z) => Decompose TrivGad (ZqBasic q z) where
@@ -254,7 +254,7 @@ gadgetZ b q = take (gadlen b q) $ iterate (*b) one
 
 instance (Reflects q z, ToInteger z, RealIntegral z, Reflects b z)
          => Gadget (BaseBGad b) (ZqBasic q z) where
-  {-# SPECIALIZE instance (Reflects q Int64, Reflects b Int64) => Gadget (BaseBGad b) (ZqBasic q Int64) #-}
+  -- {-# SPECIALIZE instance (Reflects q Int64, Reflects b Int64) => Gadget (BaseBGad b) (ZqBasic q Int64) #-}
 
   gadget = let qval = value @q
                bval = value @b
@@ -312,7 +312,7 @@ correctZ q b =
 
 instance (Reflects q z, ToInteger z, Reflects b z)
     => Correct (BaseBGad b) (ZqBasic q z) where
-  {-# SPECIALIZE instance (Reflects q Int64, Reflects b Int64) => Correct (BaseBGad b) (ZqBasic q Int64) #-}
+  -- {-# SPECIALIZE instance (Reflects q Int64, Reflects b Int64) => Correct (BaseBGad b) (ZqBasic q Int64) #-}
 
   correct =
     let qval = value @q
