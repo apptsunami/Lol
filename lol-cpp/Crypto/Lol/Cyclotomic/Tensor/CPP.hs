@@ -104,11 +104,11 @@ instance Show (ArgType CT) where
   show _ = "CT"
 
 instance Eq r => Eq (CT m r) where
-  {-# SPECIALIZE instance Eq (CT m Int64) #-}
-  {-# SPECIALIZE instance Eq (CT m Double) #-}
-  {-# SPECIALIZE instance Eq (CT m (Complex Double)) #-}
-  {-# SPECIALIZE instance Eq (CT m (ZqBasic q Int64)) #-}
-  {-# SPECIALIZE instance Eq (CT m (RRq q Double)) #-}
+  -- {-# SPECIALIZE instance Eq (CT m Int64) #-}
+  -- {-# SPECIALIZE instance Eq (CT m Double) #-}
+  -- {-# SPECIALIZE instance Eq (CT m (Complex Double)) #-}
+  -- {-# SPECIALIZE instance Eq (CT m (ZqBasic q Int64)) #-}
+  -- {-# SPECIALIZE instance Eq (CT m (RRq q Double)) #-}
 
   (ZV x) == (ZV y) = x == y
   (CT x) == (CT y) = x == y
@@ -162,11 +162,11 @@ type family Em r where
 --      which used a (very fast) C function for (*) and (+)
 instance (Additive r, Storable r, Fact m)
   => Additive.C (CT m r) where
-  {-# SPECIALIZE instance Fact m => Additive.C (CT m Int64) #-}
-  {-# SPECIALIZE instance Fact m => Additive.C (CT m Double) #-}
-  {-# SPECIALIZE instance Fact m => Additive.C (CT m (Complex Double)) #-}
-  {-# SPECIALIZE instance (Fact m, Reflects q Int64) => Additive.C (CT m (ZqBasic q Int64)) #-}
-  {-# SPECIALIZE instance Fact m => Additive.C (CT m (RRq q Double)) #-}
+  -- {-# SPECIALIZE instance Fact m => Additive.C (CT m Int64) #-}
+  -- {-# SPECIALIZE instance Fact m => Additive.C (CT m Double) #-}
+  -- {-# SPECIALIZE instance Fact m => Additive.C (CT m (Complex Double)) #-}
+  -- {-# SPECIALIZE instance (Fact m, Reflects q Int64) => Additive.C (CT m (ZqBasic q Int64)) #-}
+  -- {-# SPECIALIZE instance Fact m => Additive.C (CT m (RRq q Double)) #-}
 
   (CT (CT' a)) + (CT (CT' b)) = CT $ CT' $ SV.zipWith (+) a b
   a + b = toCT a + toCT b
@@ -187,20 +187,20 @@ instance (GFCtx fp d, Fact m, Additive (CT m fp))
     ZV zv -> ZV $ fromJust $ iZipVector $ V.fromList $ unCoeffs $ r *> Coeffs $ V.toList $ unIZipVector zv
 
 instance (Fact m, Ring r, Storable r) => Ring.C (CT m r) where
-  {-# SPECIALIZE instance Fact m => Ring.C (CT m Int64) #-}
-  {-# SPECIALIZE instance Fact m => Ring.C (CT m Double) #-}
-  {-# SPECIALIZE instance Fact m => Ring.C (CT m (Complex Double)) #-}
-  {-# SPECIALIZE instance (Fact m, Reflects q Int64) => Ring.C (CT m (ZqBasic q Int64)) #-}
+  -- {-# SPECIALIZE instance Fact m => Ring.C (CT m Int64) #-}
+  -- {-# SPECIALIZE instance Fact m => Ring.C (CT m Double) #-}
+  -- {-# SPECIALIZE instance Fact m => Ring.C (CT m (Complex Double)) #-}
+  -- {-# SPECIALIZE instance (Fact m, Reflects q Int64) => Ring.C (CT m (ZqBasic q Int64)) #-}
 
   (*) = zipWithI (*)
   fromInteger i = CT $ repl $ fromInteger i
 
 -- Need this for the ForallFact2 Module entailment below
 instance (Fact m, Ring r, Storable r) => Module.C r (CT m r) where
-  {-# SPECIALIZE instance Fact m => Module.C Int64 (CT m Int64) #-}
-  {-# SPECIALIZE instance Fact m => Module.C Double (CT m Double) #-}
-  {-# SPECIALIZE instance Fact m => Module.C (Complex Double) (CT m (Complex Double)) #-}
-  {-# SPECIALIZE instance (Fact m, Reflects q Int64) => Module.C (ZqBasic q Int64) (CT m (ZqBasic q Int64)) #-}
+  -- {-# SPECIALIZE instance Fact m => Module.C Int64 (CT m Int64) #-}
+  -- {-# SPECIALIZE instance Fact m => Module.C Double (CT m Double) #-}
+  -- {-# SPECIALIZE instance Fact m => Module.C (Complex Double) (CT m (Complex Double)) #-}
+  -- {-# SPECIALIZE instance (Fact m, Reflects q Int64) => Module.C (ZqBasic q Int64) (CT m (ZqBasic q Int64)) #-}
   (*>) r = wrap $ coerce $ SV.map (r*)
 
 -- x is approximately equal to y iff all their components are approximately equal
@@ -632,11 +632,11 @@ cDispatchGaussianDouble var = flip proxyT (Proxy::Proxy m) $ do -- in TaggedT m 
 ---------- Misc instances and arithmetic ----------
 
 instance (Storable r, Random r, Fact m) => Random (CT' m r) where
-  {-# SPECIALIZE instance Fact m => Random (CT' m Int64) #-}
-  {-# SPECIALIZE instance Fact m => Random (CT' m Double) #-}
-  {-# SPECIALIZE instance Fact m => Random (CT' m (Complex Double)) #-}
-  {-# SPECIALIZE instance (Fact m, Reflects q Int64) => Random (CT' m (ZqBasic q Int64)) #-}
-  {-# SPECIALIZE instance Fact m => Random (CT' m (RRq q Double)) #-}
+  -- {-# SPECIALIZE instance Fact m => Random (CT' m Int64) #-}
+  -- {-# SPECIALIZE instance Fact m => Random (CT' m Double) #-}
+  -- {-# SPECIALIZE instance Fact m => Random (CT' m (Complex Double)) #-}
+  -- {-# SPECIALIZE instance (Fact m, Reflects q Int64) => Random (CT' m (ZqBasic q Int64)) #-}
+  -- {-# SPECIALIZE instance Fact m => Random (CT' m (RRq q Double)) #-}
 
   random = runRand $ replM (liftRand random)
 
@@ -648,11 +648,11 @@ instance (Storable r, Random r, Fact m) => Random (CT' m r) where
   {-# INLINABLE randomR #-}
 
 instance (Storable r, Random r, Fact m) => Random (CT m r) where
-  {-# SPECIALIZE instance Fact m => Random (CT m Int64) #-}
-  {-# SPECIALIZE instance Fact m => Random (CT m Double) #-}
-  {-# SPECIALIZE instance Fact m => Random (CT m (Complex Double)) #-}
-  {-# SPECIALIZE instance (Fact m, Reflects q Int64) => Random (CT m (ZqBasic q Int64)) #-}
-  {-# SPECIALIZE instance Fact m => Random (CT m (RRq q Double)) #-}
+  -- {-# SPECIALIZE instance Fact m => Random (CT m Int64) #-}
+  -- {-# SPECIALIZE instance Fact m => Random (CT m Double) #-}
+  -- {-# SPECIALIZE instance Fact m => Random (CT m (Complex Double)) #-}
+  -- {-# SPECIALIZE instance (Fact m, Reflects q Int64) => Random (CT m (ZqBasic q Int64)) #-}
+  -- {-# SPECIALIZE instance Fact m => Random (CT m (RRq q Double)) #-}
 
   random = runRand $ CT <$> liftRand random
 
@@ -664,11 +664,11 @@ instance (Storable r, Random r, Fact m) => Random (CT m r) where
   {-# INLINABLE randomR #-}
 
 instance (NFData r) => NFData (CT m r) where
-  {-# SPECIALIZE instance NFData (CT m Int64) #-}
-  {-# SPECIALIZE instance NFData (CT m Double) #-}
-  {-# SPECIALIZE instance NFData (CT m (Complex Double)) #-}
-  {-# SPECIALIZE instance NFData (CT m (ZqBasic q Int64)) #-}
-  {-# SPECIALIZE instance NFData (CT m (RRq q Double)) #-}
+  -- {-# SPECIALIZE instance NFData (CT m Int64) #-}
+  -- {-# SPECIALIZE instance NFData (CT m Double) #-}
+  -- {-# SPECIALIZE instance NFData (CT m (Complex Double)) #-}
+  -- {-# SPECIALIZE instance NFData (CT m (ZqBasic q Int64)) #-}
+  -- {-# SPECIALIZE instance NFData (CT m (RRq q Double)) #-}
 
   rnf (CT v) = rnf v
   rnf (ZV v) = rnf v
